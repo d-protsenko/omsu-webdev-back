@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:9.6-alpine
+    container_name: webdev_postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: webdev
+      POSTGRES_USER: webdev_user
+      POSTGRES_PASSWORD: password
