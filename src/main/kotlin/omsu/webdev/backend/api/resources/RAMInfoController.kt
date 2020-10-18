@@ -10,19 +10,34 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.util.*
 
 @RestController
 @RequestMapping(value = ["/ram"])
 class RAMInfoController(@Autowired var ramInfoService: RAMInfoService) {
 
     @RequestMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
-    fun getLatestInfo(): ResponseEntity<Paged<RAMInfoView?>?>? {
+    fun getLatestInfo(
+            @RequestParam("page") page: Int?,
+            @RequestParam("size") size: Int?
+    ): ResponseEntity<Paged<RAMInfoView?>?>? {
         return ramInfoService.getLatestInfoPaged(
                 Parameters
                         .builder()
                         //TODO: get pagination from request
-                        .add("pagination", PageRequest.of(0, 50))
+                        .add("pagination",
+                                Optional.ofNullable(
+                                        page?.let {
+                                            size?.let {
+                                                PageRequest.of(page, size)
+                                            }
+                                        }
+                                ).orElseGet {
+                                    PageRequest.of(0, 50)
+                                }
+                        )
                         .add("total", 100)
                         .build()
         )?.let { ResponseEntity.ok(it) }
