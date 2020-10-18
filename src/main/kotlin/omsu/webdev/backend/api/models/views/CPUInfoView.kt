@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 
 @Data
 class CPUInfoView(
+        var id: String? = null,
         var threads: Int? = null,
         var cores: Int? = null,
         var clock: Double? = null,
@@ -16,11 +17,12 @@ class CPUInfoView(
         fun from(model: CPUInfo?): CPUInfoView? {
             return model?.let {
                 CPUInfoView(
-                        it.threads,
-                        it.cores,
-                        it.clock,
-                        it.cpuUsage,
-                        it.updatedAt
+                        id = it.id,
+                        threads = it.threads,
+                        cores = it.cores,
+                        clock = it.clock,
+                        cpuUsage = it.cpuUsage,
+                        updatedAt = it.updatedAt
                 )
             }
         }

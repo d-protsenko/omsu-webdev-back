@@ -45,7 +45,6 @@ class RAMInfoRepository(
             null,
             null
     )
-
     private var insertInfo: IInsertOperation<RAMInfo> = InsertOperation(
             template,
             objectMapper,

@@ -3,6 +3,7 @@ package omsu.webdev.backend.api.services
 import omsu.webdev.backend.api.common.db.Paged
 import omsu.webdev.backend.api.common.db.Parameters
 import omsu.webdev.backend.api.models.domain.RAMInfo
+import omsu.webdev.backend.api.models.forms.RAMInfoForm
 import omsu.webdev.backend.api.models.views.RAMInfoView
 import omsu.webdev.backend.api.repositories.RAMInfoRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,5 +38,14 @@ class RAMInfoService(
         )
         ramInfoRepository.insertInfo(parameters, info)
         return RAMInfoView.from(info)
+    }
+
+    fun insert(parameters: Parameters, form: RAMInfoForm?): RAMInfoView? {
+        form?.let { data ->
+            RAMInfo.from(data)?.let {
+                ramInfoRepository.insertInfo(parameters, it)
+            }
+        }
+        return RAMInfoView.from(RAMInfo.from(form))
     }
 }

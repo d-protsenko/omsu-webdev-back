@@ -3,6 +3,7 @@ package omsu.webdev.backend.api.services
 import omsu.webdev.backend.api.common.db.Paged
 import omsu.webdev.backend.api.common.db.Parameters
 import omsu.webdev.backend.api.models.domain.CPUInfo
+import omsu.webdev.backend.api.models.forms.CPUInfoForm
 import omsu.webdev.backend.api.models.views.CPUInfoView
 import omsu.webdev.backend.api.repositories.CPUInfoRepository
 import org.springframework.beans.factory.annotation.Autowired
@@ -37,5 +38,14 @@ class CPUInfoService(
         )
         cpuInfoRepository.insertInfo(parameters, info)
         return CPUInfoView.from(info)
+    }
+
+    fun insert(parameters: Parameters, form: CPUInfoForm?): CPUInfoView? {
+        form?.let { data ->
+            CPUInfo.from(data)?.let {
+                cpuInfoRepository.insertInfo(parameters, it)
+            }
+        }
+        return CPUInfoView.from(CPUInfo.from(form))
     }
 }

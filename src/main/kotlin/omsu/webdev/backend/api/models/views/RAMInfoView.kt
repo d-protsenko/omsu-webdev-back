@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 
 @Data
 class RAMInfoView(
+        var id: String? = null,
         var total: Double? = null,
         var available: Double? = null,
         var free: Double? = null,
@@ -16,11 +17,12 @@ class RAMInfoView(
         fun from(model: RAMInfo?): RAMInfoView? {
             return model?.let {
                 RAMInfoView(
-                        it.total,
-                        it.available,
-                        it.free,
-                        it.used,
-                        it.updatedAt
+                        id = it.id,
+                        total = it.total,
+                        available = it.available,
+                        free = it.free,
+                        used = it.used,
+                        updatedAt = it.updatedAt
                 )
             }
         }

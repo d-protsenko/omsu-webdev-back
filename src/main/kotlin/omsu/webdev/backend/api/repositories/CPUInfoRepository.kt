@@ -45,7 +45,6 @@ class CPUInfoRepository(
             null,
             null
     )
-
     private var insertInfo: IInsertOperation<CPUInfo> = InsertOperation(
             template,
             objectMapper,

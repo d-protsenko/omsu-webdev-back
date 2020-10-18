@@ -2,12 +2,14 @@ package omsu.webdev.backend.api.resources
 
 import omsu.webdev.backend.api.common.db.Paged
 import omsu.webdev.backend.api.common.db.Parameters
+import omsu.webdev.backend.api.models.forms.RAMInfoForm
 import omsu.webdev.backend.api.models.views.RAMInfoView
 import omsu.webdev.backend.api.services.RAMInfoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
@@ -50,4 +52,11 @@ class RAMInfoController(@Autowired var ramInfoService: RAMInfoService) {
         )?.let { ResponseEntity.ok(it) }
     }
 
+    @RequestMapping(value = ["/create"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
+    fun create(@RequestBody body: RAMInfoForm): ResponseEntity<RAMInfoView?>? {
+        return ramInfoService.insert(
+                Parameters().Builder().build(),
+                body
+        )?.let { ResponseEntity.ok(it) }
+    }
 }
