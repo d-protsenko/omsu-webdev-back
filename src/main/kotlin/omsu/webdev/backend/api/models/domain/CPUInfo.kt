@@ -2,8 +2,10 @@ package omsu.webdev.backend.api.models.domain
 
 import lombok.Data
 import omsu.webdev.backend.api.common.db.operations.IIndexedModel
+import omsu.webdev.backend.api.configurations.TimeZoneSingleton
 import omsu.webdev.backend.api.models.forms.CPUInfoForm
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZonedDateTime
 
 @Data
 class CPUInfo(
@@ -12,7 +14,7 @@ class CPUInfo(
         var cores: Int? = null,
         var clock: Double? = null,
         var cpuUsage: Double? = null,
-        var updatedAt: LocalDateTime? = null
+        var updatedAt: ZonedDateTime? = null
 ) : IIndexedModel {
     companion object {
         fun from(model: CPUInfoForm?): CPUInfo? {
@@ -22,7 +24,7 @@ class CPUInfo(
                         cores = it.cores,
                         clock = it.clock,
                         cpuUsage = it.cpuUsage,
-                        updatedAt = LocalDateTime.now()
+                        updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.mscTimeZone)
                 )
             }
         }

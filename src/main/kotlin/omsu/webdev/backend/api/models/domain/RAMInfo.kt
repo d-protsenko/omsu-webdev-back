@@ -2,8 +2,10 @@ package omsu.webdev.backend.api.models.domain
 
 import lombok.Data
 import omsu.webdev.backend.api.common.db.operations.IIndexedModel
+import omsu.webdev.backend.api.configurations.TimeZoneSingleton
 import omsu.webdev.backend.api.models.forms.RAMInfoForm
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZonedDateTime
 
 @Data
 class RAMInfo(
@@ -12,7 +14,7 @@ class RAMInfo(
         var available: Double? = null,
         var free: Double? = null,
         var used: Double? = null,
-        var updatedAt: LocalDateTime? = null
+        var updatedAt: ZonedDateTime? = null
 ) : IIndexedModel {
     companion object {
         fun from(model: RAMInfoForm?): RAMInfo? {
@@ -22,7 +24,7 @@ class RAMInfo(
                         available = it.available,
                         free = it.free,
                         used = it.used,
-                        updatedAt = LocalDateTime.now()
+                        updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.mscTimeZone)
                 )
             }
         }

@@ -2,7 +2,7 @@ package omsu.webdev.backend.api.models.views
 
 import lombok.Data
 import omsu.webdev.backend.api.models.domain.RAMInfo
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 @Data
 class RAMInfoView(
@@ -11,7 +11,7 @@ class RAMInfoView(
         var available: Double? = null,
         var free: Double? = null,
         var used: Double? = null,
-        var updatedAt: LocalDateTime? = null
+        var updatedAt: ZonedDateTime? = null
 ) {
     companion object {
         fun from(model: RAMInfo?): RAMInfoView? {

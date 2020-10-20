@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping(value = ["/cpu"])
+@RequestMapping(value = ["/sensors/cpu"])
 class CPUInfoController(@Autowired var cpuInfoService: CPUInfoService) {
 
     @RequestMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
@@ -28,7 +28,6 @@ class CPUInfoController(@Autowired var cpuInfoService: CPUInfoService) {
         return cpuInfoService.getLatestInfoPaged(
                 Parameters
                         .builder()
-                        //TODO: get pagination from request
                         .add("pagination",
                                 Optional.ofNullable(
                                         page?.let {

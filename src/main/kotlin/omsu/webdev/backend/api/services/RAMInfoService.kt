@@ -2,13 +2,15 @@ package omsu.webdev.backend.api.services
 
 import omsu.webdev.backend.api.common.db.Paged
 import omsu.webdev.backend.api.common.db.Parameters
+import omsu.webdev.backend.api.configurations.TimeZoneSingleton
 import omsu.webdev.backend.api.models.domain.RAMInfo
 import omsu.webdev.backend.api.models.forms.RAMInfoForm
 import omsu.webdev.backend.api.models.views.RAMInfoView
 import omsu.webdev.backend.api.repositories.RAMInfoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZonedDateTime
 
 @Service
 class RAMInfoService(
@@ -25,7 +27,7 @@ class RAMInfoService(
                 pagedInfo.totalEntities
         )
     }
-    //TODO: split ram and cpu info to different services / endpoints
+
     fun generateAndInsertLatest(parameters: Parameters): RAMInfoView? {
         val ramInfo = hardwareUsageService.getRAMInfo()
         val info = RAMInfo(
@@ -33,8 +35,7 @@ class RAMInfoService(
                 available = ramInfo.available,
                 free = ramInfo.free,
                 used = ramInfo.used,
-                //TODO: check how it works with timezones
-                updatedAt = LocalDateTime.now()
+                updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.mscTimeZone)
         )
         ramInfoRepository.insertInfo(parameters, info)
         return RAMInfoView.from(info)

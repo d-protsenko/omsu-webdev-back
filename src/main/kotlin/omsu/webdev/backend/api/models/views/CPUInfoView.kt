@@ -2,7 +2,7 @@ package omsu.webdev.backend.api.models.views
 
 import lombok.Data
 import omsu.webdev.backend.api.models.domain.CPUInfo
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 @Data
 class CPUInfoView(
@@ -11,7 +11,7 @@ class CPUInfoView(
         var cores: Int? = null,
         var clock: Double? = null,
         var cpuUsage: Double? = null,
-        var updatedAt: LocalDateTime? = null
+        var updatedAt: ZonedDateTime? = null
 ) {
     companion object {
         fun from(model: CPUInfo?): CPUInfoView? {

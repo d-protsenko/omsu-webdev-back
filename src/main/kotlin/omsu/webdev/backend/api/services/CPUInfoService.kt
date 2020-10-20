@@ -2,13 +2,15 @@ package omsu.webdev.backend.api.services
 
 import omsu.webdev.backend.api.common.db.Paged
 import omsu.webdev.backend.api.common.db.Parameters
+import omsu.webdev.backend.api.configurations.TimeZoneSingleton
 import omsu.webdev.backend.api.models.domain.CPUInfo
 import omsu.webdev.backend.api.models.forms.CPUInfoForm
 import omsu.webdev.backend.api.models.views.CPUInfoView
 import omsu.webdev.backend.api.repositories.CPUInfoRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
+import java.time.Instant
+import java.time.ZonedDateTime
 
 @Service
 class CPUInfoService(
@@ -33,8 +35,7 @@ class CPUInfoService(
                 cores = cpuInfo.cores,
                 clock = cpuInfo.clock,
                 cpuUsage = cpuInfo.cpuUsage,
-                //TODO: check how it works with timezones
-                updatedAt = LocalDateTime.now()
+                updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.mscTimeZone)
         )
         cpuInfoRepository.insertInfo(parameters, info)
         return CPUInfoView.from(info)

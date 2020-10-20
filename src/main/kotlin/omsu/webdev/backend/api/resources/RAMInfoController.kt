@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 
 @RestController
-@RequestMapping(value = ["/ram"])
+@RequestMapping(value = ["/sensors/ram"])
 class RAMInfoController(@Autowired var ramInfoService: RAMInfoService) {
 
     @RequestMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
@@ -28,7 +28,6 @@ class RAMInfoController(@Autowired var ramInfoService: RAMInfoService) {
         return ramInfoService.getLatestInfoPaged(
                 Parameters
                         .builder()
-                        //TODO: get pagination from request
                         .add("pagination",
                                 Optional.ofNullable(
                                         page?.let {
