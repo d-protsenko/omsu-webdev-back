@@ -45,8 +45,9 @@ class RAMInfoService(
         form?.let { data ->
             RAMInfo.from(data)?.let {
                 ramInfoRepository.insertInfo(parameters, it)
+                return RAMInfoView.from(it)
             }
         }
-        return RAMInfoView.from(RAMInfo.from(form))
+        return null
     }
 }

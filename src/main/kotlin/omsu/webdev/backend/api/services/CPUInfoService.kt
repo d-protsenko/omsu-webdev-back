@@ -45,8 +45,9 @@ class CPUInfoService(
         form?.let { data ->
             CPUInfo.from(data)?.let {
                 cpuInfoRepository.insertInfo(parameters, it)
+                return CPUInfoView.from(it)
             }
         }
-        return CPUInfoView.from(CPUInfo.from(form))
+        return null
     }
 }
