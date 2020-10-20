@@ -51,7 +51,7 @@ class CPUInfoController(@Autowired var cpuInfoService: CPUInfoService) {
         )?.let { ResponseEntity.ok(it) }
     }
 
-    @RequestMapping(value = ["/create"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
+    @RequestMapping(value = ["/create"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.POST])
     fun create(@RequestBody body: CPUInfoForm): ResponseEntity<CPUInfoView?>? {
         return cpuInfoService.insert(
                 Parameters().Builder().build(),

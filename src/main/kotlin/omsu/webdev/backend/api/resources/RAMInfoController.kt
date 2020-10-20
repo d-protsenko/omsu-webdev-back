@@ -51,7 +51,7 @@ class RAMInfoController(@Autowired var ramInfoService: RAMInfoService) {
         )?.let { ResponseEntity.ok(it) }
     }
 
-    @RequestMapping(value = ["/create"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
+    @RequestMapping(value = ["/create"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.POST])
     fun create(@RequestBody body: RAMInfoForm): ResponseEntity<RAMInfoView?>? {
         return ramInfoService.insert(
                 Parameters().Builder().build(),
