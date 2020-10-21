@@ -2,8 +2,16 @@ package omsu.webdev.backend.api.configurations
 
 import java.time.ZoneId
 
-class TimeZoneSingleton {
+class TimeZoneSingleton private constructor(
+        val zone: ZoneId
+) {
     companion object {
-        val mscTimeZone = ZoneId.of("Europe/Moscow")
+        private var instance: TimeZoneSingleton? = null
+        fun getInstance(): TimeZoneSingleton {
+            if (instance == null) {
+                instance = TimeZoneSingleton(ZoneId.of("Europe/Moscow"))
+            }
+            return instance as TimeZoneSingleton
+        }
     }
 }
