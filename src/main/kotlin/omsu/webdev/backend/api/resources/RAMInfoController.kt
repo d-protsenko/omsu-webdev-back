@@ -2,8 +2,10 @@ package omsu.webdev.backend.api.resources
 
 import omsu.webdev.backend.api.common.db.Paged
 import omsu.webdev.backend.api.common.db.Parameters
+import omsu.webdev.backend.api.models.forms.LoggingInfoForm
 import omsu.webdev.backend.api.models.forms.RAMInfoForm
 import omsu.webdev.backend.api.models.views.RAMInfoView
+import omsu.webdev.backend.api.services.LoggingInfoService
 import omsu.webdev.backend.api.services.RAMInfoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
@@ -18,7 +20,10 @@ import java.util.*
 
 @RestController
 @RequestMapping(value = ["/sensors/ram"])
-class RAMInfoController(@Autowired var ramInfoService: RAMInfoService) {
+class RAMInfoController(
+        @Autowired var ramInfoService: RAMInfoService,
+        @Autowired var loggingInfoService: LoggingInfoService
+) {
 
     @RequestMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
     fun getLatestInfo(
@@ -46,16 +51,30 @@ class RAMInfoController(@Autowired var ramInfoService: RAMInfoService) {
 
     @RequestMapping(value = ["/new"], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
     fun collectAndGetInfo(): ResponseEntity<RAMInfoView?>? {
-        return ramInfoService.generateAndInsertLatest(
+        val view: RAMInfoView? = ramInfoService.generateAndInsertLatest(
                 Parameters().Builder().build()
-        )?.let { ResponseEntity.ok(it) }
+        )
+        loggingInfoService.insert(
+                Parameters().Builder().build(),
+                LoggingInfoForm(
+                        message = "Collecting a RAM info from local machine. RAM usage:" + view?.used
+                )
+        )
+        return view?.let { ResponseEntity.ok(it) }
     }
 
     @RequestMapping(value = ["/create"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.POST])
     fun create(@RequestBody body: RAMInfoForm): ResponseEntity<RAMInfoView?>? {
-        return ramInfoService.insert(
+        val view: RAMInfoView? = ramInfoService.insert(
                 Parameters().Builder().build(),
                 body
-        )?.let { ResponseEntity.ok(it) }
+        )
+        loggingInfoService.insert(
+                Parameters().Builder().build(),
+                LoggingInfoForm(
+                        message = "Inserting a RAM info gathered from remote machine. RAM usage:" + view?.used
+                )
+        )
+        return view?.let { ResponseEntity.ok(it) }
     }
 }

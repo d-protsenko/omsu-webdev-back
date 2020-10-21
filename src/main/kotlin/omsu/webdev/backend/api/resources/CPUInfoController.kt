@@ -3,8 +3,10 @@ package omsu.webdev.backend.api.resources
 import omsu.webdev.backend.api.common.db.Paged
 import omsu.webdev.backend.api.common.db.Parameters
 import omsu.webdev.backend.api.models.forms.CPUInfoForm
+import omsu.webdev.backend.api.models.forms.LoggingInfoForm
 import omsu.webdev.backend.api.models.views.CPUInfoView
 import omsu.webdev.backend.api.services.CPUInfoService
+import omsu.webdev.backend.api.services.LoggingInfoService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.PageRequest
 import org.springframework.http.MediaType
@@ -18,7 +20,10 @@ import java.util.*
 
 @RestController
 @RequestMapping(value = ["/sensors/cpu"])
-class CPUInfoController(@Autowired var cpuInfoService: CPUInfoService) {
+class CPUInfoController(
+        @Autowired var cpuInfoService: CPUInfoService,
+        @Autowired var loggingInfoService: LoggingInfoService
+) {
 
     @RequestMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
     fun getLatestInfo(
@@ -46,17 +51,31 @@ class CPUInfoController(@Autowired var cpuInfoService: CPUInfoService) {
 
     @RequestMapping(value = ["/new"], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
     fun collectAndGetInfo(): ResponseEntity<CPUInfoView?>? {
-        return cpuInfoService.generateAndInsertLatest(
+        val view: CPUInfoView? = cpuInfoService.generateAndInsertLatest(
                 Parameters().Builder().build()
-        )?.let { ResponseEntity.ok(it) }
+        )
+        loggingInfoService.insert(
+                Parameters().Builder().build(),
+                LoggingInfoForm(
+                        message = "Collecting a CPU info from local machine. CPU usage:" + view?.cpuUsage
+                )
+        )
+        return view?.let { ResponseEntity.ok(it) }
     }
 
     @RequestMapping(value = ["/create"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.POST])
     fun create(@RequestBody body: CPUInfoForm): ResponseEntity<CPUInfoView?>? {
-        return cpuInfoService.insert(
+        val view: CPUInfoView? = cpuInfoService.insert(
                 Parameters().Builder().build(),
                 body
-        )?.let { ResponseEntity.ok(it) }
+        )
+        loggingInfoService.insert(
+                Parameters().Builder().build(),
+                LoggingInfoForm(
+                        message = "Inserting a CPU info gathered from remote machine. CPU usage:" + view?.cpuUsage
+                )
+        )
+        return view?.let { ResponseEntity.ok(it) }
     }
 
 }
