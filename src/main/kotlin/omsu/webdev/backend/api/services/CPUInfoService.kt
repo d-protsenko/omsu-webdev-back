@@ -30,13 +30,13 @@ class CPUInfoService(
 
     fun generateAndInsertLatest(parameters: Parameters): CPUInfoView? {
         val cpuInfo = hardwareUsageService.getCPUInfo()
-        val info = CPUInfo(
-                threads = cpuInfo.threads,
-                cores = cpuInfo.cores,
-                clock = cpuInfo.clock,
-                cpuUsage = cpuInfo.cpuUsage,
-                updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone)
-        )
+        val info = CPUInfo.Builder()
+                .threads(cpuInfo.threads)
+                .cores(cpuInfo.cores)
+                .clock(cpuInfo.clock)
+                .cpuUsage(cpuInfo.cpuUsage)
+                .updatedAt(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
+                .build()
         cpuInfoRepository.insertInfo(parameters, info)
         return CPUInfoView.from(info)
     }

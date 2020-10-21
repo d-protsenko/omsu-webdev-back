@@ -30,13 +30,13 @@ class RAMInfoService(
 
     fun generateAndInsertLatest(parameters: Parameters): RAMInfoView? {
         val ramInfo = hardwareUsageService.getRAMInfo()
-        val info = RAMInfo(
-                total = ramInfo.total,
-                available = ramInfo.available,
-                free = ramInfo.free,
-                used = ramInfo.used,
-                updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone)
-        )
+        val info = RAMInfo.Builder()
+                .total(ramInfo.total)
+                .available(ramInfo.available)
+                .free(ramInfo.free)
+                .used(ramInfo.used)
+                .updatedAt(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
+                .build()
         ramInfoRepository.insertInfo(parameters, info)
         return RAMInfoView.from(info)
     }
