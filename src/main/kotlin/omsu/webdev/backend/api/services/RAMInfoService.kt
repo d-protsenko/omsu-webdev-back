@@ -35,7 +35,7 @@ class RAMInfoService(
                 available = ramInfo.available,
                 free = ramInfo.free,
                 used = ramInfo.used,
-                updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.mscTimeZone)
+                updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone)
         )
         ramInfoRepository.insertInfo(parameters, info)
         return RAMInfoView.from(info)

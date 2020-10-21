@@ -35,7 +35,7 @@ class CPUInfoService(
                 cores = cpuInfo.cores,
                 clock = cpuInfo.clock,
                 cpuUsage = cpuInfo.cpuUsage,
-                updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.mscTimeZone)
+                updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone)
         )
         cpuInfoRepository.insertInfo(parameters, info)
         return CPUInfoView.from(info)

@@ -6,6 +6,7 @@ import omsu.webdev.backend.api.configurations.TimeZoneSingleton
 import omsu.webdev.backend.api.models.forms.RAMInfoForm
 import java.time.Instant
 import java.time.ZonedDateTime
+import java.util.*
 
 @Data
 class RAMInfo(
@@ -24,7 +25,8 @@ class RAMInfo(
                         available = it.available,
                         free = it.free,
                         used = it.used,
-                        updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.mscTimeZone)
+                        updatedAt = Optional.ofNullable(it.updatedAt)
+                                .orElse(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
                 )
             }
         }

@@ -6,6 +6,7 @@ import omsu.webdev.backend.api.configurations.TimeZoneSingleton
 import omsu.webdev.backend.api.models.forms.CPUInfoForm
 import java.time.Instant
 import java.time.ZonedDateTime
+import java.util.*
 
 @Data
 class CPUInfo(
@@ -24,7 +25,8 @@ class CPUInfo(
                         cores = it.cores,
                         clock = it.clock,
                         cpuUsage = it.cpuUsage,
-                        updatedAt = ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.mscTimeZone)
+                        updatedAt = Optional.ofNullable(it.updatedAt)
+                                .orElse(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
                 )
             }
         }
