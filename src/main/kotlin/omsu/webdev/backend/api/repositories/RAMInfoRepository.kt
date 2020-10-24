@@ -19,39 +19,39 @@ import org.springframework.stereotype.Repository
 
 @Repository
 class RAMInfoRepository(
-        @Autowired var template: JdbcTemplate,
-        @Autowired var objectMapper: ObjectMapper
+    @Autowired var template: JdbcTemplate,
+    @Autowired var objectMapper: ObjectMapper
 ) {
     private var getInfo: IGetOperation<RAMInfo> = GetOperation(
-            template,
-            objectMapper,
-            "select data from ram_info %FILTERING%",
-            RAMInfo::class.java,
-            null,
-            null
+        template,
+        objectMapper,
+        "select data from ram_info %FILTERING%",
+        RAMInfo::class.java,
+        null,
+        null
     )
     private var countInfo: ICountOperation = CountOperation(
-            template,
-            objectMapper,
-            "select count(*) from ram_info %FILTERING%",
-            Int::class.java,
-            null
+        template,
+        objectMapper,
+        "select count(*) from ram_info %FILTERING%",
+        Int::class.java,
+        null
     )
     private var getInfoPaged: IGetPageOperation<RAMInfo> = GetPageOperation(
-            template,
-            objectMapper,
-            "select data from ram_info %FILTERING% limit ? offset ?",
-            RAMInfo::class.java,
-            null,
-            null
+        template,
+        objectMapper,
+        "select data from ram_info %FILTERING% limit ? offset ?",
+        RAMInfo::class.java,
+        null,
+        null
     )
     private var insertInfo: IInsertOperation<RAMInfo> = InsertOperation(
-            template,
-            objectMapper,
-            "insert into ram_info (data) values ((?::jsonb))",
-            "ram_info",
-            null,
-            null
+        template,
+        objectMapper,
+        "insert into ram_info (data) values ((?::jsonb))",
+        "ram_info",
+        null,
+        null
     )
 
     fun findLatestPaged(parameters: Parameters): Paged<RAMInfo>? {

@@ -14,7 +14,7 @@ class ObjectMapperConfig {
     @Primary
     @Bean
     fun objectMapper(
-            builder: Jackson2ObjectMapperBuilder
+        builder: Jackson2ObjectMapperBuilder
     ): ObjectMapper {
         val objectMapper = builder.createXmlMapper(false).build<ObjectMapper>()
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)

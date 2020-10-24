@@ -5,7 +5,7 @@ import omsu.webdev.backend.api.common.db.Parameters
 class QueryHelper {
     companion object {
         fun addFiltersToQuery(
-                parameters: Parameters
+            parameters: Parameters
         ): String? {
             val query: String = parameters["query"]!!
             val filters: IQueryFilter? = parameters["filters"]

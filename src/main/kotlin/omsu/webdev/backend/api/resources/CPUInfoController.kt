@@ -21,44 +21,43 @@ import java.util.*
 @RestController
 @RequestMapping(value = ["/sensors/cpu"])
 class CPUInfoController(
-        @Autowired var cpuInfoService: CPUInfoService,
-        @Autowired var loggingInfoService: LoggingInfoService
+    @Autowired var cpuInfoService: CPUInfoService,
+    @Autowired var loggingInfoService: LoggingInfoService
 ) {
 
     @RequestMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
     fun getLatestInfo(
-            @RequestParam("page") page: Int?,
-            @RequestParam("size") size: Int?
+        @RequestParam("page") page: Int?,
+        @RequestParam("size") size: Int?
     ): ResponseEntity<Paged<CPUInfoView?>?>? {
         return cpuInfoService.getLatestInfoPaged(
-                Parameters
-                        .builder()
-                        .add("pagination",
-                                Optional.ofNullable(
-                                        page?.let {
-                                            size?.let {
-                                                PageRequest.of(page, size)
-                                            }
-                                        }
-                                ).orElseGet {
-                                    PageRequest.of(0, 50)
-                                }
-                        )
-                        .add("total", 100)
-                        .build()
+            Parameters
+                .builder()
+                .add("pagination",
+                    Optional.ofNullable(
+                        page?.let {
+                            size?.let {
+                                PageRequest.of(page, size)
+                            }
+                        }
+                    ).orElseGet {
+                        PageRequest.of(0, 50)
+                    }
+                )
+                .build()
         )?.let { ResponseEntity.ok(it) }
     }
 
     @RequestMapping(value = ["/new"], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
     fun collectAndGetInfo(): ResponseEntity<CPUInfoView?>? {
         val view: CPUInfoView? = cpuInfoService.generateAndInsertLatest(
-                Parameters().Builder().build()
+            Parameters().Builder().build()
         )
         loggingInfoService.insert(
-                Parameters().Builder().build(),
-                LoggingInfoForm(
-                        message = "Collecting a CPU info from local machine. CPU usage:" + view?.cpuUsage
-                )
+            Parameters().Builder().build(),
+            LoggingInfoForm(
+                message = "Collecting a CPU info from local machine. CPU usage:" + view?.cpuUsage
+            )
         )
         return view?.let { ResponseEntity.ok(it) }
     }
@@ -66,14 +65,14 @@ class CPUInfoController(
     @RequestMapping(value = ["/create"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.POST])
     fun create(@RequestBody body: CPUInfoForm): ResponseEntity<CPUInfoView?>? {
         val view: CPUInfoView? = cpuInfoService.insert(
-                Parameters().Builder().build(),
-                body
+            Parameters().Builder().build(),
+            body
         )
         loggingInfoService.insert(
-                Parameters().Builder().build(),
-                LoggingInfoForm(
-                        message = "Inserting a CPU info gathered from remote machine. CPU usage:" + view?.cpuUsage
-                )
+            Parameters().Builder().build(),
+            LoggingInfoForm(
+                message = "Inserting a CPU info gathered from remote machine. CPU usage:" + view?.cpuUsage
+            )
         )
         return view?.let { ResponseEntity.ok(it) }
     }

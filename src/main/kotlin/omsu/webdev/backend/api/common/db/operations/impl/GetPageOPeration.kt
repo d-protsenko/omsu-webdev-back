@@ -59,10 +59,10 @@ class GetPageOperation<M>(
 
     fun getEntity(parameters: Parameters?): M? {
         val queryParameters = Parameters.builder()
-                .add("query", sqlQuery)
-                .add("replaceable_tag", FILTERING_TAG)
-                .add("required_filters", parameters?.get("required_filters")!!)
-                .build()
+            .add("query", sqlQuery)
+            .add("replaceable_tag", FILTERING_TAG)
+            .add("required_filters", parameters?.get("required_filters")!!)
+            .build()
         return try {
             updateParametersByArguments(parameters!!, queryParameters)
             val query: String? = QueryHelper.addFiltersToQuery(queryParameters)
@@ -84,10 +84,10 @@ class GetPageOperation<M>(
             val pagination: Pageable = parameters["pagination"]!!
             val query: String = sqlQuery
             val queryParameters = Parameters.builder()
-                    .add("query", query)
-                    .add("replaceable_tag", FILTERING_TAG)
-                    .add("required_filters", parameters.get<IQueryFilter>("required_filters"))
-                    .build()
+                .add("query", query)
+                .add("replaceable_tag", FILTERING_TAG)
+                .add("required_filters", parameters.get<IQueryFilter>("required_filters"))
+                .build()
             updateParametersByArguments(parameters, queryParameters)
             val queryWithFilters: String? = QueryHelper.addFiltersToQuery(queryParameters)
             val list: List<M> = jdbcTemplate.query(

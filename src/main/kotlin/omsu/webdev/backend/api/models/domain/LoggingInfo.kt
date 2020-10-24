@@ -7,16 +7,16 @@ import java.time.ZonedDateTime
 
 @Data
 class LoggingInfo(
-        override var id: String? = null,
-        var message: String? = null,
-        var updatedAt: ZonedDateTime? = null
+    override var id: String? = null,
+    var message: String? = null,
+    var updatedAt: ZonedDateTime? = null
 ) : IIndexedModel {
     companion object {
         fun from(form: LoggingInfoForm?): LoggingInfo? {
             return form?.let {
                 LoggingInfo(
-                        message = it.message,
-                        updatedAt = it.updatedAt
+                    message = it.message,
+                    updatedAt = it.updatedAt
                 )
             }
         }

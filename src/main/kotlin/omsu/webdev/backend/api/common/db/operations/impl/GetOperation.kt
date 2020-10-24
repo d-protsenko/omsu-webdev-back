@@ -15,12 +15,12 @@ import java.util.*
 import java.util.function.Consumer
 
 class GetOperation<M>(
-        private val jdbcTemplate: JdbcTemplate,
-        private val objectMapper: ObjectMapper,
-        sqlScript: String,
-        private val clazz: Class<M>,
-        arguments: MutableList<String>?,
-        rowMapper: RowMapper<M>? = null
+    private val jdbcTemplate: JdbcTemplate,
+    private val objectMapper: ObjectMapper,
+    sqlScript: String,
+    private val clazz: Class<M>,
+    arguments: MutableList<String>?,
+    rowMapper: RowMapper<M>? = null
 ) : IGetOperation<M> {
     private val sqlQuery: String = sqlScript
     private var arguments: MutableList<String>? = null
@@ -41,8 +41,8 @@ class GetOperation<M>(
             this.rowMapper = RowMapper { rs: ResultSet, i: Int ->
                 try {
                     return@RowMapper objectMapper.readValue(
-                            rs.getString(1),
-                            this.clazz
+                        rs.getString(1),
+                        this.clazz
                     )
                 } catch (e: Exception) {
                     throw SerializationException("Cannot deserialize class", e)
@@ -53,17 +53,17 @@ class GetOperation<M>(
 
     override fun getEntity(parameters: Parameters?): M? {
         val queryParameters = Parameters.builder()
-                .add("query", sqlQuery)
-                .add("replaceable_tag", FILTERING_TAG)
-                .add("required_filters", parameters?.get("required_filters")!!)
-                .build()
+            .add("query", sqlQuery)
+            .add("replaceable_tag", FILTERING_TAG)
+            .add("required_filters", parameters?.get("required_filters")!!)
+            .build()
         return try {
             updateParametersByArguments(parameters!!, queryParameters)
             val query: String? = QueryHelper.addFiltersToQuery(queryParameters)
             jdbcTemplate.queryForObject(
-                    query!!,
-                    buildArguments(queryParameters),
-                    rowMapper!!
+                query!!,
+                buildArguments(queryParameters),
+                rowMapper!!
             )!!
         } catch (e: EmptyResultDataAccessException) {
             null
@@ -74,27 +74,27 @@ class GetOperation<M>(
 
     private fun updateParametersByArguments(source: Parameters, target: Parameters) {
         arguments!!.forEach(
-                Consumer { arg: String ->
-                    if (arg != "filters" || null == target[arg]) {
-                        target[arg] = source[arg]!!
-                    }
+            Consumer { arg: String ->
+                if (arg != "filters" || null == target[arg]) {
+                    target[arg] = source[arg]!!
                 }
+            }
         )
     }
 
     private fun buildArguments(parameters: Parameters): Array<Any?> {
         val arguments: MutableList<Any?> = ArrayList()
         this.arguments!!.forEach(
-                Consumer { index: String ->
-                    if (index == "filters") {
-                        val filters: IQueryFilter? = parameters["filters"]
-                        filters?.arguments?.let { arguments.addAll(it) }
-                    } else {
-                        parameters.get<Any>(index)?.let {
-                            arguments.add(it)
-                        }
+            Consumer { index: String ->
+                if (index == "filters") {
+                    val filters: IQueryFilter? = parameters["filters"]
+                    filters?.arguments?.let { arguments.addAll(it) }
+                } else {
+                    parameters.get<Any>(index)?.let {
+                        arguments.add(it)
                     }
                 }
+            }
         )
         return arguments.toTypedArray()
     }

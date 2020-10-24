@@ -3,7 +3,7 @@ package omsu.webdev.backend.api.configurations
 import java.time.ZoneId
 
 class TimeZoneSingleton private constructor(
-        val zone: ZoneId
+    val zone: ZoneId
 ) {
     companion object {
         private var instance: TimeZoneSingleton? = null

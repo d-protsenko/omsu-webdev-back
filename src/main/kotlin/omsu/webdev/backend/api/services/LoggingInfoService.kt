@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service
 
 @Service
 class LoggingInfoService(
-        @Autowired var loggingInfoRepository: LoggingInfoRepository
+    @Autowired var loggingInfoRepository: LoggingInfoRepository
 ) {
     fun getLatestInfoPaged(parameters: Parameters): Paged<LoggingInfoView?>? {
         val pagedInfo: Paged<LoggingInfo> = loggingInfoRepository.findLatestPaged(parameters)!!
         return Paged(
-                pagedInfo.content?.map { it ->
-                    LoggingInfoView.from(it)
-                },
-                pagedInfo.totalPages,
-                pagedInfo.totalEntities
+            pagedInfo.content?.map { it ->
+                LoggingInfoView.from(it)
+            },
+            pagedInfo.totalPages,
+            pagedInfo.totalEntities
         )
     }
 

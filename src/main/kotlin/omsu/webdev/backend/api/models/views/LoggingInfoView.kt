@@ -6,17 +6,17 @@ import java.time.ZonedDateTime
 
 @Data
 class LoggingInfoView(
-        var id: String? = null,
-        var message: String? = null,
-        var updatedAt: ZonedDateTime? = null
+    var id: String? = null,
+    var message: String? = null,
+    var updatedAt: ZonedDateTime? = null
 ) {
     companion object {
         fun from(model: LoggingInfo?): LoggingInfoView? {
             return model?.let {
                 LoggingInfoView(
-                        id = it.id,
-                        message = it.message,
-                        updatedAt = it.updatedAt
+                    id = it.id,
+                    message = it.message,
+                    updatedAt = it.updatedAt
                 )
             }
         }

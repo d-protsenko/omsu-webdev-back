@@ -10,23 +10,23 @@ import java.util.*
 
 @Data
 class RAMInfo(
-        override var id: String? = null,
-        var total: Double? = null,
-        var available: Double? = null,
-        var free: Double? = null,
-        var used: Double? = null,
-        var updatedAt: ZonedDateTime? = null
+    override var id: String? = null,
+    var total: Double? = null,
+    var available: Double? = null,
+    var free: Double? = null,
+    var used: Double? = null,
+    var updatedAt: ZonedDateTime? = null
 ) : IIndexedModel {
     companion object {
         fun from(model: RAMInfoForm?): RAMInfo? {
             return model?.let {
                 RAMInfo(
-                        total = it.total,
-                        available = it.available,
-                        free = it.free,
-                        used = it.used,
-                        updatedAt = Optional.ofNullable(it.updatedAt)
-                                .orElse(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
+                    total = it.total,
+                    available = it.available,
+                    free = it.free,
+                    used = it.used,
+                    updatedAt = Optional.ofNullable(it.updatedAt)
+                        .orElse(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
                 )
             }
         }
@@ -68,11 +68,11 @@ class RAMInfo(
 
             fun build(): RAMInfo {
                 return RAMInfo(
-                        total = this.total,
-                        available = this.available,
-                        free = this.free,
-                        used = this.used,
-                        updatedAt = this.updatedAt
+                    total = this.total,
+                    available = this.available,
+                    free = this.free,
+                    used = this.used,
+                    updatedAt = this.updatedAt
                 )
             }
         }

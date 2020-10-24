@@ -14,29 +14,30 @@ import java.time.ZonedDateTime
 
 @Service
 class CPUInfoService(
-        @Autowired var cpuInfoRepository: CPUInfoRepository,
-        @Autowired var hardwareUsageService: HardwareUsageService
+    @Autowired var cpuInfoRepository: CPUInfoRepository,
+    @Autowired var hardwareUsageService: HardwareUsageService
 ) {
     fun getLatestInfoPaged(parameters: Parameters): Paged<CPUInfoView?>? {
         val pagedInfo: Paged<CPUInfo> = cpuInfoRepository.findLatestPaged(parameters)!!
         return Paged(
-                pagedInfo.content?.map { it ->
-                    CPUInfoView.from(it)
-                },
-                pagedInfo.totalPages,
-                pagedInfo.totalEntities
+            pagedInfo.content?.map { it ->
+                CPUInfoView.from(it)
+            },
+            pagedInfo.totalPages,
+            pagedInfo.totalEntities
         )
     }
 
     fun generateAndInsertLatest(parameters: Parameters): CPUInfoView? {
         val cpuInfo = hardwareUsageService.getCPUInfo()
         val info = CPUInfo.Builder()
-                .threads(cpuInfo.threads)
-                .cores(cpuInfo.cores)
-                .clock(cpuInfo.clock)
-                .cpuUsage(cpuInfo.cpuUsage)
-                .updatedAt(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
-                .build()
+            .threads(cpuInfo.threads)
+            .cores(cpuInfo.cores)
+            .clock(cpuInfo.clock)
+            .cpuUsage(cpuInfo.cpuUsage)
+            //Todo: move to instant data only, zonedDatetime only in view!!
+            .updatedAt(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
+            .build()
         cpuInfoRepository.insertInfo(parameters, info)
         return CPUInfoView.from(info)
     }

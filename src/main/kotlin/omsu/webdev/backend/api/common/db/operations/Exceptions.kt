@@ -26,10 +26,10 @@ class DuplicateKeyOrCombinationOfKeysException : java.lang.RuntimeException {
     constructor(message: String?, cause: Throwable?) : super(concatenateMessage(message), cause)
     constructor(cause: Throwable?) : super(cause)
     constructor(
-            message: String?,
-            cause: Throwable?,
-            enableSuppression: Boolean,
-            writableStackTrace: Boolean
+        message: String?,
+        cause: Throwable?,
+        enableSuppression: Boolean,
+        writableStackTrace: Boolean
     ) : super(concatenateMessage(message), cause, enableSuppression, writableStackTrace)
 
     companion object {
@@ -47,10 +47,10 @@ class DatabaseException : java.lang.RuntimeException {
     constructor(message: String?, cause: Throwable?) : super(concatenateMessage(message), cause)
     constructor(cause: Throwable?) : super(cause)
     protected constructor(
-            message: String?,
-            cause: Throwable?,
-            enableSuppression: Boolean,
-            writableStackTrace: Boolean
+        message: String?,
+        cause: Throwable?,
+        enableSuppression: Boolean,
+        writableStackTrace: Boolean
     ) : super(concatenateMessage(message), cause, enableSuppression, writableStackTrace)
 
     companion object {
@@ -68,10 +68,10 @@ class InsertEntityToDatabaseException : java.lang.RuntimeException {
     constructor(message: String?, cause: Throwable?) : super(concatenateMessage(message), cause)
     constructor(cause: Throwable?) : super(cause)
     protected constructor(
-            message: String?,
-            cause: Throwable?,
-            enableSuppression: Boolean,
-            writableStackTrace: Boolean
+        message: String?,
+        cause: Throwable?,
+        enableSuppression: Boolean,
+        writableStackTrace: Boolean
     ) : super(concatenateMessage(message), cause, enableSuppression, writableStackTrace)
 
     companion object {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.Instant
 import java.util.*
 
 @RestController
@@ -22,33 +23,34 @@ class LoggingInfoController(@Autowired var loggingInfoService: LoggingInfoServic
 
     @RequestMapping(value = [""], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.GET])
     fun getLatestInfo(
-            @RequestParam("page") page: Int?,
-            @RequestParam("size") size: Int?
+        @RequestParam("page") page: Int?,
+        @RequestParam("size") size: Int?,
+        @RequestParam("since") since: Instant?
     ): ResponseEntity<Paged<LoggingInfoView?>?>? {
         return loggingInfoService.getLatestInfoPaged(
-                Parameters
-                        .builder()
-                        .add("pagination",
-                                Optional.ofNullable(
-                                        page?.let {
-                                            size?.let {
-                                                PageRequest.of(page, size)
-                                            }
-                                        }
-                                ).orElseGet {
-                                    PageRequest.of(0, 50)
-                                }
-                        )
-                        .add("total", 100)
-                        .build()
+            Parameters
+                .builder()
+                .add("pagination",
+                    Optional.ofNullable(
+                        page?.let {
+                            size?.let {
+                                PageRequest.of(page, size)
+                            }
+                        }
+                    ).orElseGet {
+                        PageRequest.of(0, 50)
+                    }
+                )
+                .add("since", since)
+                .build()
         )?.let { ResponseEntity.ok(it) }
     }
 
     @RequestMapping(value = ["/create"], consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE], method = [RequestMethod.POST])
     fun create(@RequestBody body: LoggingInfoForm): ResponseEntity<LoggingInfoView?>? {
         return loggingInfoService.insert(
-                Parameters().Builder().build(),
-                body
+            Parameters().Builder().build(),
+            body
         )?.let { ResponseEntity.ok(it) }
     }
 

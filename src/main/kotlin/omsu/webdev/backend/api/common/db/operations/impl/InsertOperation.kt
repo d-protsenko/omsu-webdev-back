@@ -16,12 +16,12 @@ import java.util.*
 
 
 class InsertOperation<M : IIndexedModel?>(
-        jdbcTemplate: JdbcTemplate,
-        private val objectMapper: ObjectMapper,
-        sqlScript: String?,
-        private val indexName: String?,
-        normalizer: ITwoArgsAction<Parameters?, M>?,
-        arguments: MutableList<String>?
+    jdbcTemplate: JdbcTemplate,
+    private val objectMapper: ObjectMapper,
+    sqlScript: String?,
+    private val indexName: String?,
+    normalizer: ITwoArgsAction<Parameters?, M>?,
+    arguments: MutableList<String>?
 ) : ModifyingCommonOperation(jdbcTemplate, sqlScript), IInsertOperation<M> {
     private var normalizer: ITwoArgsAction<Parameters?, M> = object : ITwoArgsAction<Parameters?, M> {
         override fun execute(arg1: Parameters?, arg2: M) {
@@ -31,13 +31,13 @@ class InsertOperation<M : IIndexedModel?>(
     private var idGenerator: BiFunction<Parameters?, M, String> = BiFunction { _, _ -> UUID.randomUUID().toString() }
 
     constructor(
-            jdbcTemplate: JdbcTemplate,
-            objectMapper: ObjectMapper,
-            sqlScript: String?,
-            indexName: String?,
-            normalizer: ITwoArgsAction<Parameters?, M>?,
-            arguments: MutableList<String>?,
-            idGenerator: BiFunction<Parameters?, M, String>?
+        jdbcTemplate: JdbcTemplate,
+        objectMapper: ObjectMapper,
+        sqlScript: String?,
+        indexName: String?,
+        normalizer: ITwoArgsAction<Parameters?, M>?,
+        arguments: MutableList<String>?,
+        idGenerator: BiFunction<Parameters?, M, String>?
     ) : this(jdbcTemplate, objectMapper, sqlScript, indexName, normalizer, arguments) {
         if (null != idGenerator) {
             this.idGenerator = idGenerator
@@ -74,16 +74,16 @@ class InsertOperation<M : IIndexedModel?>(
 }
 
 abstract class ModifyingCommonOperation(
-        private val jdbcTemplate: JdbcTemplate,
-        private val sqlScript: String?
+    private val jdbcTemplate: JdbcTemplate,
+    private val sqlScript: String?
 ) {
     private var arguments: List<String>? = null
     fun execute(parameters: Parameters?, model: String) {
         val args = buildArguments(parameters, model)
         try {
             jdbcTemplate.update(
-                    sqlScript!!,
-                    *args
+                sqlScript!!,
+                *args
             )
         } catch (e: DuplicateKeyException) {
             throw DuplicateKeyOrCombinationOfKeysException("The entity with the same fields already exists", e)

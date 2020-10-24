@@ -10,23 +10,23 @@ import java.util.*
 
 @Data
 class CPUInfo(
-        override var id: String? = null,
-        var threads: Int? = null,
-        var cores: Int? = null,
-        var clock: Double? = null,
-        var cpuUsage: Double? = null,
-        var updatedAt: ZonedDateTime? = null
+    override var id: String? = null,
+    var threads: Int? = null,
+    var cores: Int? = null,
+    var clock: Double? = null,
+    var cpuUsage: Double? = null,
+    var updatedAt: ZonedDateTime? = null
 ) : IIndexedModel {
     companion object {
         fun from(model: CPUInfoForm?): CPUInfo? {
             return model?.let {
                 CPUInfo(
-                        threads = it.threads,
-                        cores = it.cores,
-                        clock = it.clock,
-                        cpuUsage = it.cpuUsage,
-                        updatedAt = Optional.ofNullable(it.updatedAt)
-                                .orElse(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
+                    threads = it.threads,
+                    cores = it.cores,
+                    clock = it.clock,
+                    cpuUsage = it.cpuUsage,
+                    updatedAt = Optional.ofNullable(it.updatedAt)
+                        .orElse(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
                 )
             }
         }
@@ -68,11 +68,11 @@ class CPUInfo(
 
             fun build(): CPUInfo {
                 return CPUInfo(
-                        threads = this.threads,
-                        cores = this.cores,
-                        clock = this.clock,
-                        cpuUsage = this.cpuUsage,
-                        updatedAt = this.updatedAt
+                    threads = this.threads,
+                    cores = this.cores,
+                    clock = this.clock,
+                    cpuUsage = this.cpuUsage,
+                    updatedAt = this.updatedAt
                 )
             }
         }

@@ -16,6 +16,7 @@ class HardwareUsageService {
         private const val biGiga: Double = 1024 * 1024 * 1024.0
         private const val decGiga: Double = 1000000000.0
     }
+
     private val si = SystemInfo()
     private val hal: HardwareAbstractionLayer = si.hardware
     private val cpu: CentralProcessor = hal.processor
@@ -23,7 +24,7 @@ class HardwareUsageService {
     private var prevTicks = LongArray(CentralProcessor.TickType.values().size)
 
     @Scheduled(
-            fixedRate = 300000
+        fixedRate = 300000
     )
     fun updateTicks() {
         prevTicks = cpu.systemCpuLoadTicks
@@ -33,17 +34,17 @@ class HardwareUsageService {
         val cpuLoad: Double = cpu.getSystemCpuLoadBetweenTicks(prevTicks) * 100
         prevTicks = cpu.systemCpuLoadTicks
         return CPUInfo(
-                threads = cpu.logicalProcessors.size,
-                cores =  cpu.physicalProcessorCount,
-                clock =  cpu.maxFreq / decGiga,
-                cpuUsage =  cpuLoad
+            threads = cpu.logicalProcessors.size,
+            cores = cpu.physicalProcessorCount,
+            clock = cpu.maxFreq / decGiga,
+            cpuUsage = cpuLoad
         )
     }
 
     fun getRAMInfo(): RAMInfo {
         val info = RAMInfo(
-                total =  memory.total / biGiga,
-                available =  memory.available / biGiga
+            total = memory.total / biGiga,
+            available = memory.available / biGiga
         )
         info.available?.let { available ->
             info.total?.let { total ->
