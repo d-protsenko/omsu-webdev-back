@@ -36,7 +36,7 @@ class CPUInfoService(
             .clock(cpuInfo.clock)
             .cpuUsage(cpuInfo.cpuUsage)
             //Todo: move to instant data only, zonedDatetime only in view!!
-            .updatedAt(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
+            .updatedAt(Instant.now())
             .build()
         cpuInfoRepository.insertInfo(parameters, info)
         return CPUInfoView.from(info)

@@ -36,7 +36,6 @@ class GetPageOperation<M>(
         } else {
             val args: ArrayList<String> = ArrayList()
             args.add("filters")
-            args.add("filters")
             args.add("pagination")
             args.add("criteria")
             this.arguments = args

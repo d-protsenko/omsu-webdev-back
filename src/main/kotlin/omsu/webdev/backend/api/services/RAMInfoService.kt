@@ -35,7 +35,7 @@ class RAMInfoService(
             .available(ramInfo.available)
             .free(ramInfo.free)
             .used(ramInfo.used)
-            .updatedAt(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
+            .updatedAt(Instant.now())
             .build()
         ramInfoRepository.insertInfo(parameters, info)
         return RAMInfoView.from(info)

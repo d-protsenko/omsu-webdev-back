@@ -58,13 +58,13 @@ class LoggingInfoRepository(
     )
 
     fun findLatestPaged(parameters: Parameters): Paged<LoggingInfo>? {
-        countInfo.count(parameters)?.let {
-            parameters["total"] = it
-        }
         parameters.get<Instant>("since")?.let {
             parameters["filters"] = Filters("AND",
                 listOf(CaseSensitiveFilter(
                     "((data->>'updatedAt')::timestamptz) >= (?::timestamptz)", it.toString())))
+        }
+        countInfo.count(parameters)?.let {
+            parameters["total"] = it
         }
         return getInfoPaged.getPage(parameters)
     }
