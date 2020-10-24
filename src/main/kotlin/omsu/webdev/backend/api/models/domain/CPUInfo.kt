@@ -2,10 +2,8 @@ package omsu.webdev.backend.api.models.domain
 
 import lombok.Data
 import omsu.webdev.backend.api.common.db.operations.IIndexedModel
-import omsu.webdev.backend.api.configurations.TimeZoneSingleton
 import omsu.webdev.backend.api.models.forms.CPUInfoForm
 import java.time.Instant
-import java.time.ZonedDateTime
 import java.util.*
 
 @Data
@@ -15,7 +13,7 @@ class CPUInfo(
     var cores: Int? = null,
     var clock: Double? = null,
     var cpuUsage: Double? = null,
-    var updatedAt: ZonedDateTime? = null
+    var updatedAt: Instant? = null
 ) : IIndexedModel {
     companion object {
         fun from(model: CPUInfoForm?): CPUInfo? {
@@ -26,7 +24,7 @@ class CPUInfo(
                     clock = it.clock,
                     cpuUsage = it.cpuUsage,
                     updatedAt = Optional.ofNullable(it.updatedAt)
-                        .orElse(ZonedDateTime.ofInstant(Instant.now(), TimeZoneSingleton.getInstance().zone))
+                        .orElse(Instant.now())
                 )
             }
         }
@@ -40,7 +38,7 @@ class CPUInfo(
             private var cores: Int? = null
             private var clock: Double? = null
             private var cpuUsage: Double? = null
-            private var updatedAt: ZonedDateTime? = null
+            private var updatedAt: Instant? = null
             fun threads(threads: Int?): CPUInfoBuilder {
                 threads.let { this.threads = it }
                 return this
@@ -61,7 +59,7 @@ class CPUInfo(
                 return this
             }
 
-            fun updatedAt(updatedAt: ZonedDateTime?): CPUInfoBuilder {
+            fun updatedAt(updatedAt: Instant?): CPUInfoBuilder {
                 updatedAt.let { this.updatedAt = it }
                 return this
             }

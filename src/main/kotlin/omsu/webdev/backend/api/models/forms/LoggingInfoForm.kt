@@ -1,8 +1,8 @@
 package omsu.webdev.backend.api.models.forms
 
-import java.time.ZonedDateTime
+import java.time.Instant
 
 class LoggingInfoForm(
     var message: String? = null,
-    var updatedAt: ZonedDateTime? = null
+    var updatedAt: Instant? = null
 )

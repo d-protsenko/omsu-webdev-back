@@ -1,6 +1,7 @@
 package omsu.webdev.backend.api.models.views
 
 import lombok.Data
+import omsu.webdev.backend.api.configurations.TimeZoneSingleton
 import omsu.webdev.backend.api.models.domain.CPUInfo
 import java.time.ZonedDateTime
 
@@ -22,7 +23,7 @@ class CPUInfoView(
                     cores = it.cores,
                     clock = it.clock,
                     cpuUsage = it.cpuUsage,
-                    updatedAt = it.updatedAt
+                    updatedAt = ZonedDateTime.ofInstant(it.updatedAt, TimeZoneSingleton.getInstance().zone)
                 )
             }
         }
