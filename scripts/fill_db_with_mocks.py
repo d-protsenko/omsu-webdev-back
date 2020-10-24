@@ -3,9 +3,11 @@ from datetime import datetime
 from datetime import timedelta
 import random
 import json
+import uuid
 
 datetime_format = '%Y-%m-%dT%H:%M:%S%z'
 datetime_format_readable = '%%Y-%%m-%%dT%%H:%%M:%%S%%z'
+
 
 # example: 2019-12-25T13:21:12+0000
 
@@ -51,6 +53,7 @@ def gen_datetimes(min_datetime: datetime, max_datetime: datetime, count: int):
 def gen_cpu_data(date_time):
     cores = round(random.random() * 128)
     return {
+        "id": str(uuid.uuid4()),
         "threads": cores * 2,
         "cores": cores,
         "clock": round(random.random() * 5000),
@@ -64,11 +67,28 @@ def gen_ram_data(date_time):
     available = round(random.random() * total)
     free = total - available
     return {
+        "id": str(uuid.uuid4()),
         "total": total,
         "available": available,
         "free": free,
         "used": free,
         "updatedAt": date_time,
+    }
+
+
+def gen_log_ram_data(data):
+    return {
+        "id": str(uuid.uuid4()),
+        "message": 'Inserting a RAM info gathered from remote machine. RAM usage: ' + str(data['used']),
+        "updatedAt": data['updatedAt'],
+    }
+
+
+def gen_log_cpu_data(data):
+    return {
+        "id": str(uuid.uuid4()),
+        "message": 'Inserting a CPU info gathered from remote machine. CPU usage: ' + str(data['cpuUsage']),
+        "updatedAt": data['updatedAt'],
     }
 
 
@@ -91,9 +111,13 @@ def write_obj_log(
     for i in range(count):
         generated_cpu_object = gen_cpu_data(temp_datetime.isoformat())
         generated_ram_object = gen_ram_data(temp_datetime.isoformat())
+        cpu_log_obj = gen_log_cpu_data(generated_cpu_object)
+        ram_log_obj = gen_log_ram_data(generated_ram_object)
         temp_datetime += step
         print(write_insert_value_to_collection(generated_cpu_object, 'cpu_info'))
         print(write_insert_value_to_collection(generated_ram_object, 'ram_info'))
+        print(write_insert_value_to_collection(cpu_log_obj, 'logging_info'))
+        print(write_insert_value_to_collection(ram_log_obj, 'logging_info'))
 
 
 def main():
