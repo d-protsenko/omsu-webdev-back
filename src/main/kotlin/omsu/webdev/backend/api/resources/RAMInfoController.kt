@@ -56,7 +56,8 @@ class RAMInfoController(
         loggingInfoService.insert(
             Parameters().Builder().build(),
             LoggingInfoForm(
-                message = "Collecting a RAM info from local machine. RAM usage:" + view?.used
+                message = "Collecting a RAM info from local machine. RAM usage:" + view?.used,
+                updatedAt = view?.updatedAt?.toInstant()
             )
         )
         return view?.let { ResponseEntity.ok(it) }
@@ -71,7 +72,8 @@ class RAMInfoController(
         loggingInfoService.insert(
             Parameters().Builder().build(),
             LoggingInfoForm(
-                message = "Inserting a RAM info gathered from remote machine. RAM usage:" + view?.used
+                message = "Inserting a RAM info gathered from remote machine. RAM usage:" + view?.used,
+                updatedAt = view?.updatedAt?.toInstant()
             )
         )
         return view?.let { ResponseEntity.ok(it) }

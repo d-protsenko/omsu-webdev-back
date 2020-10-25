@@ -2,6 +2,7 @@ package omsu.webdev.backend.api.resources
 
 import omsu.webdev.backend.api.common.db.Paged
 import omsu.webdev.backend.api.common.db.Parameters
+import omsu.webdev.backend.api.configurations.TimeZoneSingleton
 import omsu.webdev.backend.api.models.forms.CPUInfoForm
 import omsu.webdev.backend.api.models.forms.LoggingInfoForm
 import omsu.webdev.backend.api.models.views.CPUInfoView
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.ZonedDateTime
 import java.util.*
 
 @RestController
@@ -56,7 +58,8 @@ class CPUInfoController(
         loggingInfoService.insert(
             Parameters().Builder().build(),
             LoggingInfoForm(
-                message = "Collecting a CPU info from local machine. CPU usage:" + view?.cpuUsage
+                message = "Collecting a CPU info from local machine. CPU usage:" + view?.cpuUsage,
+                updatedAt = view?.updatedAt?.toInstant()
             )
         )
         return view?.let { ResponseEntity.ok(it) }
@@ -71,7 +74,8 @@ class CPUInfoController(
         loggingInfoService.insert(
             Parameters().Builder().build(),
             LoggingInfoForm(
-                message = "Inserting a CPU info gathered from remote machine. CPU usage:" + view?.cpuUsage
+                message = "Inserting a CPU info gathered from remote machine. CPU usage:" + view?.cpuUsage,
+                updatedAt = view?.updatedAt?.toInstant()
             )
         )
         return view?.let { ResponseEntity.ok(it) }
