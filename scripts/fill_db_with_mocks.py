@@ -16,14 +16,14 @@ def parse_arguments():
     parser.add_argument('-s', '--start',
                         type=str,
                         dest='period_start',
-                        default='2020-10-23T12:00:00+0000',
+                        default='2020-11-13T11:00:00Z',
                         help='Start of the readings period in this format: ' +
                              datetime_format_readable
                         )
     parser.add_argument('-e', '--end',
                         type=str,
                         dest='period_end',
-                        default='2020-10-24T12:00:00+0000',
+                        default='2020-11-13T18:00:00Z',
                         help='End of the readings period in this format: ' +
                              datetime_format_readable
                         )

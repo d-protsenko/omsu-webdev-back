@@ -40,7 +40,7 @@ class RAMInfoRepository(
     private var getInfoPaged: IGetPageOperation<RAMInfo> = GetPageOperation(
         template,
         objectMapper,
-        "select data from ram_info %FILTERING% limit ? offset ?",
+        "select data from ram_info %FILTERING% order by ram_info.data->>'updatedAt' DESC limit ? offset ?",
         RAMInfo::class.java,
         null,
         null

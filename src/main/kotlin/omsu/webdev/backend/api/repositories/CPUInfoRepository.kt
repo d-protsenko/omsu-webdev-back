@@ -40,7 +40,7 @@ class CPUInfoRepository(
     private var getInfoPaged: IGetPageOperation<CPUInfo> = GetPageOperation(
             template,
             objectMapper,
-            "select data from cpu_info %FILTERING% limit ? offset ?",
+            "select data from cpu_info %FILTERING% order by cpu_info.data->>'updatedAt' DESC limit ? offset ?",
             CPUInfo::class.java,
             null,
             null

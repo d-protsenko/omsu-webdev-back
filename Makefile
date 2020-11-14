@@ -6,3 +6,6 @@ fill_db_with_mocks:
 
 call_api:
 	python3.8 scripts/generate_hw_data.py
+
+connect_to_db:
+	docker exec -it webdev_postgres psql -U webdev_user webdev password

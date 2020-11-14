@@ -43,7 +43,7 @@ class LoggingInfoRepository(
     private var getInfoPaged: IGetPageOperation<LoggingInfo> = GetPageOperation(
         template,
         objectMapper,
-        "select data from logging_info %FILTERING% limit ? offset ?",
+        "select data from logging_info %FILTERING% order by logging_info.data->>'updatedAt' DESC limit ? offset ?",
         LoggingInfo::class.java,
         null,
         null
